@@ -92,7 +92,8 @@ int main(int argc,const char *argv[]){
 // make an array to hold each ind's fitness        
         double popfitness[N];
         int j;
-        for(j=0; j<N; j++){
+        for(j=0; j<N; j++)
+        {
         	if(pop[j] == 1){popfitness[j] = 1+s;
         	}else{
         		popfitness[j]=1;
@@ -112,16 +113,12 @@ int main(int argc,const char *argv[]){
 		//x will record number of copies of mutant in the pop
 		
 // start a while loop to run the program until fixation occurs		
-    	while(x < N && x > 0) // go generation by generation //until fixes or goes extinct, keep track of pop by monitoring ind's with a 1 (mutants)
-    	{  //could also do:  while( !(x==0 || x==N)) //which are our stopping conditions, we want the opposite of it, so the exclamation point goes in front, using an OR operator
-           // double && means AND, single & means something different but related
+    	while(x < N && x > 0) // go generation by generation until fixes or goes extinct, keep track of pop by monitoring ind's with a 1 (mutants)
+    	{  
            //both parts of an AND statement must be true for it to be true
-           //skips second part if first part is false b/c it will never as a whole be true ***********  e.g can use it to prevent actions that aren't allowed, like dividing by zero
-           
-           // Reproduction (make children, then replace adults with children) = evolution/drift
            //so sample with replacement: make a second pop and use the first pop (parents)
            
-           int pop2[N];    //WHY WAS IT OKAY THAT THIS WAS NOT DYNAMICALLY ALLOCATED????
+           int pop2[N];    //WHY WAS IT OKAY THAT THIS WAS NOT DYNAMICALLY ALLOCATED???? ***********************<<<<<<<<<<<
 
 // make the offspring generation population
            for(i=0; i<N; i++)
@@ -144,7 +141,7 @@ int main(int argc,const char *argv[]){
            		// which individual does our random number correspond to?
            		int who = 0;
            		while(who < N)
-           			{ // could also have thie be while(1){... so that it always continues until we break
+           			{ // could also have this be while(1){... so that it always continues until we break
            				if(randnum < boxedges[who]){
            				// if randnum is less than the value, then we've found the individual to choose -- the first box that randnum is less than means that is the box it falls into
            				break; // exits the loop
@@ -155,10 +152,8 @@ int main(int argc,const char *argv[]){
            			// the above picks one individual -> then ramp up to get whole population
     // put that one offspring into our offspring population
            		//probchosen = normalized probability of being chosen
-	           pop2[i] = pop[who]; //want a random integer between (and including) 0 and N-1 to pick someone out of the parent pop
-	           //rand(); //spits out an int between 0 and RAND_MAX-1, takes no arguments
-	           //RAND_MAX // a global variable that always exists and contains the maximum number for the rand function
-	           // % can also be a modulus, so do long division and give the remainder, e.g. x % b gives something never bigger than b (i.e. ranges from 0 to b-1)         
+	           pop2[i] = pop[who]; //pick someone out of the parent pop
+	           
              //free(probchosen);
              free(boxedges); // I think this is the one I want to free?
            }
@@ -177,9 +172,7 @@ int main(int argc,const char *argv[]){
                 	x += pop[i]; //add up all genotype values to get # mutants  += means add to existing value, same as x = x+
             	} //end for loop
         } // end while loop 'x<N & x>0
-    	//Evolve 
-    	
-    	
+    	    	
     	// if I wanted to, could release the pointer here:
     		// free(pop);
     	
@@ -191,7 +184,6 @@ int main(int argc,const char *argv[]){
     } //end for loop 'r=0' is start
     
     // summarize and output result
-    //the proportion will be number of results/total number of runs
     printf("Number of successes: %d \nNumber of replicates: %d \nProportion fixed: %f \n", result, REPS, (double)(result)/REPS); //stands for print format, contains the format and the variable within the parentheses
     //what follows the percent tells C how to treat that variable (its type)  %f means floating point number/double; %d means integer
     //%d has sub options if you want a signed or unsigned integer
