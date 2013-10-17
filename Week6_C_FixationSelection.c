@@ -34,7 +34,8 @@
 // make a sum function for standardizing fitnesses
 	double sum_array(int a[], int num_elements)
 	{
-   		int i, sum=0;
+   		int i; 
+   		double sum=0;
    		for (i=0; i<num_elements; i++)
    		{
 			 sum = sum + a[i];
@@ -57,7 +58,7 @@ int main(int argc,const char *argv[]){
 	int N = atoi(argv[1]);  /// converts ascii to int  (there's also an atof, and there's not one for characters because things are already characters
 	double Pinit = atof(argv[2]);
 	int REPS = atoi(argv[3]);
-	double s = atoi(argv[4]); // selection coefficient
+	double s = atof(argv[4]); // selection coefficient
 
 	// resident has fitness of 1
 	// mutant has fitness of 1+s
