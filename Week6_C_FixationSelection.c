@@ -118,7 +118,7 @@ int main(int argc,const char *argv[]){
            //both parts of an AND statement must be true for it to be true
            //so sample with replacement: make a second pop and use the first pop (parents)
            
-           int pop2[N];    //WHY WAS IT OKAY THAT THIS WAS NOT DYNAMICALLY ALLOCATED???? ***********************<<<<<<<<<<<
+           int *pop2 = malloc(sizeof(int)*N);   
 
 // make the offspring generation population
            for(i=0; i<N; i++)
@@ -166,6 +166,8 @@ int main(int argc,const char *argv[]){
            for(i=0; i<N; i++){
            	pop[i]=pop2[i];
            }
+           
+           free(pop2);
            
            // update x after the pop has evolved:
            x = 0; // this is okay b/c the while loop won't check x until the end
