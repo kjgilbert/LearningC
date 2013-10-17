@@ -50,7 +50,7 @@ int main(int argc,const char *argv[]){
 
 // stop me if I don't feed arguments in
 	if(argc<=1) {
-    	    printf("You did not feed me arguments for N, Pinit, or Reps.\n");
+    	    printf("You did not feed me arguments for N, Pinit, Reps, or s.\n");
         	exit(1);
      	}
 
@@ -102,7 +102,7 @@ int main(int argc,const char *argv[]){
 		double probchosen[N]; // probability of being chosen to have offspring is the relative fitness
 		int jj;
 		for(jj=0; j<N; j++){
-			probchosen[jj] = popfitness[jj]/sum_array(popfitness, N); // ERRORS COMING UP HERE, something wrong with the sum function?
+			probchosen[jj] = popfitness[jj]/sum_array(popfitness, N); 
 		}
 
 // now the parent population exists, need some variables to characterize it        
@@ -120,6 +120,7 @@ int main(int argc,const char *argv[]){
            
            // Reproduction (make children, then replace adults with children) = evolution/drift
            //so sample with replacement: make a second pop and use the first pop (parents)
+           
            int pop2[N];    //WHY WAS IT OKAY THAT THIS WAS NOT DYNAMICALLY ALLOCATED????
 
 // make the offspring generation population
