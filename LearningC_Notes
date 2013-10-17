@@ -1,0 +1,313 @@
+
+
+C is a compiled language  (uses a 'recipe' to turn commands into machine code)
+
+R is an interpreted language  (goes more step by step, Jeremy's cooking analogy)
+
+compile time error - compiler can't do something
+run time error, after compiling, OS says program has done something wrong, usu outside the allowed memory
+
+linker, another step, can put sets of machine code together, e.g. used to link the gsl
+compiler writes machine code
+
+
+
+commenting:
+
+// one line of code comment
+/*     
+       */
+
+
+every C program has a "main" function
+	int main
+		{......
+			...}
+	
+	the main function is the defining thing of what happens in the code
+	
+	so how should you plan your code?
+		there will be decision points, and loops
+		(or recursion, when a function calls itself)
+		
+1. Plan (pseudocode, numbered steps)
+2. Compiler, linker, Unix, debugger knowledge
+3. Shell script knowledge
+4. Tool to analyze resultant data: R!
+5. How to test and validate code? ABSOLUTELY must have
+6. Source of outside help when needed
+7. How to archive, make your code reproducible
+8. The raw programming itself
+
+
+
+
+*** COMPILING CODE ***
+
+in the terminal:
+> gcc name.c
+
+then it makes an executable (default will be "a.out")
+or can get warnings where it will have compiled anyway
+or can get errors, and often gives a line number
+
+
+
+to change that, do:
+> gcc name.c -o name
+
+run:
+> ./name
+
+chmod +x name   // to give yourself permission to run 
+
+run time errors, usually segmentation fault or bus error
+
+
+
+
+*** VARIABLES ***
+
+every variable must be declared once and only once in the code
+	this means you tell C what type of data goes in that variable, and it can never be changed within the code
+		type of data, size (i.e. memory amount per variable)
+	possible data types: integers, floating point numbers (continuous decimals), text
+		and versions within
+			e.g. integers with size and whether it can be negative or not
+				floating point numbers differ in size and precision
+				int = integer
+				double = floating point number
+				
+			declare by saying:  type  name  and potentially more ;
+			end line with ";"
+			e.g.  int x;
+			  double y;
+			  int x,y;
+			  
+			every function will have a specified inpt and output, so output from another function should match input to another
+			
+			"scope" is also defined, to say when the variable is what it is	
+				e.g. within a block (defined by {}) then the variable isn't defined outside of that block
+				
+		a declaration doesn't make the variable anything, just defines it
+		so can do:   int x = 5;
+			or
+				int x;
+				x=5;
+				
+		loops:  for, while, if
+		
+		while(     )
+		{
+		....
+		}
+	
+	
+	
+	example, don't declare the variable you want to fill your answer into within the block
+	int answer;
+	while(...)
+	{
+	answer=calc;
+	}
+	
+	
+	OR can even initially define it to see if it changes
+	int answer = -1;
+	while(...)
+	{
+	...
+	}
+	
+	
+
+	
+	
+*** WRITING CODE ***
+ 
+in a plain text editor, write whatever, and save as .C at the end (a C source file)
+
+white space is usually fine
+
+semicolons at end of line, but not for things like loops
+
+
+	
+
+
+int answer = -1;
+int x,y;
+while(x < y) //or, DNE !=    , equals ==
+{
+...
+}
+
+
+C does a weird thing that usually if you have a bug that a number is showing up somewhere instead of a T/F, then if = 0 that is FALSE, >0 is TRUE
+
+printf("hello world/n"); //this is a function
+
+
+
+
+
+
+
+
+
+
+**** 9/18/13
+
+a program to add numbers
+
+get numbers
+store numbers
+run the function
+get the output
+
+
+
+functions need to have inputs, what they do, and outputs
+they can only take the input you declare
+
+the output of the function is the 'return value'
+
+
+
+
+** arrays
+
+an array is "a row of boxes", each box has a type telling it how big it should be and how it should be interpreted (integer, character...)
+one array has boxes of all the same types!!!!
+can be accessed by an index
+
+declare an array by using square brackets after the name of the variable:   int a[3];  //gives 3 boxes to this array
+find one value of the array by calling it with the number if the box, starting with 0!!!
+
+2nd box would be number 1 :   a[1]
+
+so a[0], a[1], a[2]
+
+a by itself starts at the beginning
+a[0] means go to a and just start at the first box
+
+no error will show up if you assign something to a[3] or even a[12]
+i.e. it lets you write past the end, so have to remember yourself the length
+
+arrays are bad for ordered things; they can't be expanded, and it's hard to insert values
+
+
+
+** define a function
+
+int sq(int x, double y)  // to square two numbers, accepts only ints or doubles
+
+
+
+
+10/9/13
+
+Pointers
+
+
+ a variable is 2 things: the location of something and the information at that location
+ 
+ int i=1;
+ int j=2;
+ int k=j;   // this means take the value in box j and put it into box k
+ if I did j=5; k would still be 2
+alternatively, you might want two different names that refer to the same box value, so the same box has 2 names
+this way, the values change together
+
+we would make a pointer in this case (point to another address in memory)
+
+int j=2;
+int *k; //the asterisk makes it a pointer; always want to make it the right variable type, here int
+ // it points to nothing if you do the above notation
+ //if we want it to point to j, i.e. make k the location of j, not the value, the ampersand around j means take j's location
+ int *k= &j;  // take the address of the box labeled j, not the contents
+ 
+ //this would print the address of k:
+ printf("%p\n",k)  // %p means pointer
+ printf("%p %p \n", k, &j);  // should give the same thing twice, both of these are addresses
+ printf("%d %d \n", *k, j) //should both be the same integer, both of these are the values of the addresses
+
+anytime the '*' is not in the declaration statement, it will follow the address and return the value at that location   %d is for an integer
+
+
+pointers are useful: 	one variable with 2 diff names
+						can be used with arrays
+						dynamic memory allocation ( so we don't have to recompile and change the value of our pre-processor macros)
+						using arrays and other structure with functions (data structures)
+						
+
+e.g.  make an array:  int x[4];  //makes an array of length 4
+int *y =x;   //because the name of an array is already an address, doesn't need &.  y is the location of the start of the array
+y = y+2;
+printf("%d", *y);   //this would print the value of the third box in the array (location 2) because of the line above it
+//here it's really important to have the variable type correct, so C know to go to the second 'int' not the second 'byte' because the second byte is still in the first int b/c of how much memory it takes up
+x[2]; is the same as  *(y+2);
+
+
+Dynamic memory allocation:
+	int *x = malloc(sizeof(int)*4);  // this function takes one argument, the number of bytes you want to allocate
+			// but never want to state an explicit number b/c can vary by computer type, so instead say we want the size of something
+			// the above gives an array of length 4, and it is dynamically allocated
+			// same as int y[4];   <- statically allocated
+			// can still do the following:
+		x[0] = 1;
+		y[0] = 1;
+	// BUT it's nice to be able to do the following:
+	int N = 100;
+	int *x = malloc(sizeof(int)*N);
+
+// with malloc (dynamic memory) it has to be given back when you're done with it, by:
+	free(x);  // failing to do this makes a memory leak
+	// calling something after it's been free will also give an error; it's like going off the end of an array
+	// don't free something until you're done using it b/c you cannot access it later
+	//in general everything is freed when the program finished running, btu sometimes it's important to free memory space in the meantime
+******* so when in a loop, you want to free dynamic memory at the end of the loop each time, otherwise C will use new memory each time
+* dynamic allocations also let you "use" more memory because you can ask for some amount, but if you forget to free something and have a memory leak, a program can suck up all the RAM and slow a computer to a crawl
+
+
+Pointers with functions
+
+
+
+	// square all numbers in this array
+
+
+void squareArray(int *z, int size){  //make a function that has no return type (returns void)
+	// return type, name, argument list
+	int
+	for(i=0; <size; i++) z[i] = z[i]*z[i];
+	}
+	
+	main{
+		int s=10;
+		int *x = malloc(sizeof(int)*s);
+		***fill the array with things***
+		sqArray(x,s); // in spot x we MUST give it a pointer
+		// so now x has been squared, 
+	
+	}
+
+
+
+
+// speed
+ how does the number of things that you have to do scale with the problem
+ 
+ Big-O
+ describes performance
+ 
+ e.g. how slow will something become when you make N really big
+ 
+ O(1)   means program doesn't slow down as N increases - best case scenario
+ O(n) is the worst case scenario in the week 6 code, slows down a lot as n increases
+ 
+ in general:
+ O(1) is best
+ O(n) is the average case, on average we search through boxes and hit the one we want N/2, worst case is to search to the last box, best to search to the first box
+O(n^2) is worse
+O(x^n) is the worst
