@@ -32,7 +32,7 @@
 	}
 	
 // make a sum function for standardizing fitnesses
-	double sum_array(int a[], int num_elements)
+	double sum_array(double a[], int num_elements)
 	{
    		int i; 
    		double sum=0;
