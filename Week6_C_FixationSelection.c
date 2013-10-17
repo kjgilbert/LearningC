@@ -157,10 +157,10 @@ int main(int argc,const char *argv[]){
              //free(probchosen);
              free(boxedges); // I think this is the one I want to free?
              free(popfitness);
-             free(probshosen);
+             free(probchosen);
            }
            
-           
+     //////// ERROR NOW GETTING:   FixationSelection(52062) malloc: *** error for object 0x100100150: pointer being freed was not allocated *** set a breakpoint in malloc_error_break to debug Abort trap
            
            //put pop2 into pop to replace adults with offspring
            for(i=0; i<N; i++){
