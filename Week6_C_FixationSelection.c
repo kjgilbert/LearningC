@@ -46,6 +46,7 @@ int main(int argc,const char *argv[]){
 	int N = atoi(argv[1]);  /// converts ascii to int  (there's also an atof, and there's not one for characters because things are already characters
 	double Pinit = atof(argv[2]);
 	int REPS = atoi(argv[3]);
+	double s = atoi(argv[4]); // selection coefficient
 
 	// resident has fitness of 1
 	// mutant has fitness of 1+s
@@ -68,13 +69,24 @@ int main(int argc,const char *argv[]){
         {
             if (i < Pinit * N)  // based on initial freq assign either a 1 or 0, if startP=0.01, so inds 0-9 get 1's everyone else gets 0's
             { 			
-                pop[i]=1;
+                pop[i]=1; // 1's are mutants, need to assign their fitness somewhere
             } //end if statement
             else{ //else statements must always be directly after the bracket or the following line like this, but no further
             pop[i]=0;
             } //end else statement
             
         } // end for loop 'i=0' is start
+
+// make an array to hold each ind's fitness        
+        double popfitness[N];
+        int j;
+        for(j=0; j<N; j++){
+        	if(popfitness[j] == 1){popfitness[j] = 1+s;
+        	}else{
+        		popfitness[j]=1;
+        		}
+        }
+// make an array of standardized values -> relative fitnesses
 
 // now the parent population exists, need some variables to characterize it        
         
@@ -101,11 +113,13 @@ int main(int argc,const char *argv[]){
            		double *boxedges = malloc(sizeof(double)*N);
            		double total = 0;
            		// set up the box for the "right edge" of each box in our distribution of probabilities of a given mutant/ind being chosen
-           		for(int i=0; i<N; i++)
+           		
+           		int k;
+           		for(k=0; k<N; k++)
            			{
            				// take our array of probabilities and make them into an array of cumulative probabilities to define a "box" within which we randomly draw a number and depending on size of box determines prob of landing there thus defining prob of an ind being chosen
-           				total += probchosen[i]; // total is tracking the right edge of each box
-           				boxedges[i] = total;
+           				total += probchosen[k]; // total is tracking the right edge of each box
+           				boxedges[k] = total;
            			}
            		
 	// get one individual offspring
