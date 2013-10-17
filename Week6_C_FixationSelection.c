@@ -30,6 +30,17 @@
 		// use casting so the division doesn't come out as a rounded integer
 		return((double)rand() / RAND_MAX);  // the return function "returns control of the program back to the main function where it left off before being called
 	}
+	
+// make a sum function for standardizing fitnesses
+	double sum_array(int a[], int num_elements)
+	{
+   		int i, sum=0;
+   		for (i=0; i<num_elements; i++)
+   		{
+			 sum = sum + a[i];
+ 		}
+   	return(sum);
+	}
 
 // start the body of the program
 
@@ -81,12 +92,17 @@ int main(int argc,const char *argv[]){
         double popfitness[N];
         int j;
         for(j=0; j<N; j++){
-        	if(popfitness[j] == 1){popfitness[j] = 1+s;
+        	if(pop[j] == 1){popfitness[j] = 1+s;
         	}else{
         		popfitness[j]=1;
         		}
         }
 // make an array of standardized values -> relative fitnesses
+		double probchosen[N]; // probability of being chosen to have offspring is the relative fitness
+		int jj;
+		for(jj=0; j<N; j++){
+			probchosen[jj] = popfitness[jj]/sum_array(popfitness, N); // ERRORS COMING UP HERE, something wrong with the sum function?
+		}
 
 // now the parent population exists, need some variables to characterize it        
         
