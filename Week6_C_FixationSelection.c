@@ -21,42 +21,49 @@
 
 // what is the probability of fixation in a population  P(p)_fixation
 
+
+
+
+// first make our own rand function to sample from a uniform distribution 0-1
   	// modify rand to get a uniform distribution from 0 to 1 to draw from
 	double runif(){ // doesn't need any info, it will just spit out a random number
 		// use casting so the division doesn't come out as a rounded integer
 		return((double)rand() / RAND_MAX);  // the return function "returns control of the program back to the main function where it left off before being called
 	}
 
-
+// start the body of the program
 
 int main(int argc,const char *argv[]){
 
-if(argc<=1) {
-        printf("You did not feed me arguments for N, Pinit, or Reps.\n");
-        exit(1);
-     }
 
-int N = atoi(argv[1]);  /// converts ascii to int  (there's also an atof, and there's not one for characters because things are already characters
-double Pinit = atof(argv[2]);
-int REPS = atoi(argv[3]);
+// stop me if I don't feed arguments in
+	if(argc<=1) {
+    	    printf("You did not feed me arguments for N, Pinit, or Reps.\n");
+        	exit(1);
+     	}
 
-// resident has fitness of 1
-// mutant has fitness of 1+s
+// assign some variables I'll take from the command line
+	int N = atoi(argv[1]);  /// converts ascii to int  (there's also an atof, and there's not one for characters because things are already characters
+	double Pinit = atof(argv[2]);
+	int REPS = atoi(argv[3]);
 
-// to make the most general case, want to pick individuals weighted based on their fitnesses
-// e.g.  fitnesses for N=3 are 1, 1.1, 0.97, prob of each getting picked = 1/(1+1.1+0.97), 1.1/sum(...), 0.97/sum(...)
+	// resident has fitness of 1
+	// mutant has fitness of 1+s
+
+	// to make the most general case, want to pick individuals weighted based on their fitnesses
+	// e.g.  fitnesses for N=3 are 1, 1.1, 0.97, prob of each getting picked = 1/(1+1.1+0.97), 1.1/sum(...), 0.97/sum(...)
 
     int fixations = 0;  //outside replication block
     int r; //count reps
     int *pop = malloc(sizeof(int)*N); // wasn't in a loop so it was okay not to free
     int result = 0; //put outside the for loop so that we can store the results from the replicates that are within the for loop
     
-    //start loop to replicate
+//start loop to run through replicates
     for (r = 0; r < REPS; r++)
     {
-        int i;  // this one will be the thing that assigns our population
+        int i;  // iterate
         
-        //start loop to make and follow one pop at a time
+//start loop to make one pop at a time
         for(i = 0; i < N; i++) // initiate loop, continue while true (so up until we are one less than N which is correct to the end because N is length 0 to N-1), iterate
         {
             if (i < Pinit * N)  // based on initial freq assign either a 1 or 0, if startP=0.01, so inds 0-9 get 1's everyone else gets 0's
@@ -68,11 +75,14 @@ int REPS = atoi(argv[3]);
             } //end else statement
             
         } // end for loop 'i=0' is start
-        
+
+// now the parent population exists, need some variables to characterize it        
         
         //casting, taking one variable and treating it like another, put parenthesis of type you want it to be in front of it (doesn't actually change it though), we're not using the round function, so it rounds down b/c it just elimiates anything past decimal
    	 	int x = (int)(Pinit * N); //might not be a round number when we multiply, so round down and make it an int from a double
-    	//x will record number of copies of mutant in the pop
+		//x will record number of copies of mutant in the pop
+		
+// start a while loop to run the program until fixation occurs		
     	while(x < N && x > 0) // go generation by generation //until fixes or goes extinct, keep track of pop by monitoring ind's with a 1 (mutants)
     	{  //could also do:  while( !(x==0 || x==N)) //which are our stopping conditions, we want the opposite of it, so the exclamation point goes in front, using an OR operator
            // double && means AND, single & means something different but related
@@ -81,38 +91,48 @@ int REPS = atoi(argv[3]);
            
            // Reproduction (make children, then replace adults with children) = evolution/drift
            //so sample with replacement: make a second pop and use the first pop (parents)
-           int pop2[N];
-           // fill in this pop with inds
-           for(i=0; i<N; i++){
-           		// modify rand to get a uniform distribution from 0 to 1 to draw from
+           int pop2[N];    //WHY WAS IT OKAY THAT THIS WAS NOT DYNAMICALLY ALLOCATED????
+
+// make the offspring generation population
+           for(i=0; i<N; i++)
+           {
+           		// modify rand to get a uniform distribution from 0 to 1 to draw from for selecting an individual
            		double randnum = runif();
            		double *boxedges = malloc(sizeof(double)*N);
            		double total = 0;
            		// set up the box for the "right edge" of each box in our distribution of probabilities of a given mutant/ind being chosen
-           		for(int i=0; i<N; i++){
-           			// take our array of probabilities and make them into an array of cumulative probabilities to define a "box" within which we randomly draw a number and depending on size of box determines prob of landing there thus defining prob of an ind being chosen
-           			total += probchosen[i]; // total is tracking the right edge of each box
-           			boxedges[i] = total;
-           		}
+           		for(int i=0; i<N; i++)
+           			{
+           				// take our array of probabilities and make them into an array of cumulative probabilities to define a "box" within which we randomly draw a number and depending on size of box determines prob of landing there thus defining prob of an ind being chosen
+           				total += probchosen[i]; // total is tracking the right edge of each box
+           				boxedges[i] = total;
+           			}
+           		
+	// get one individual offspring
            		// which individual does our random number correspond to?
            		int who = 0;
-           		while(who < N){ // could also have thie be while(1){... so that it always continues until we break
-           			if(randnum < boxedges[who]){
+           		while(who < N)
+           			{ // could also have thie be while(1){... so that it always continues until we break
+           				if(randnum < boxedges[who]){
            				// if randnum is less than the value, then we've found the individual to choose -- the first box that randnum is less than means that is the box it falls into
            				break; // exits the loop
-           			}else{
+           				}else{
            				who++;
+           				} // who will equal the location in the array of the ind we want
            			}
-           		}
            			// the above picks one individual -> then ramp up to get whole population
-           		
+    // put that one offspring into our offspring population
            		//probchosen = normalized probability of being chosen
-	           pop2[i] = pop[rand() % N]; //want a random integer between (and including) 0 and N-1 to pick someone out of the parent pop
+	           pop2[i] = pop[who]; //want a random integer between (and including) 0 and N-1 to pick someone out of the parent pop
 	           //rand(); //spits out an int between 0 and RAND_MAX-1, takes no arguments
 	           //RAND_MAX // a global variable that always exists and contains the maximum number for the rand function
 	           // % can also be a modulus, so do long division and give the remainder, e.g. x % b gives something never bigger than b (i.e. ranges from 0 to b-1)         
-             free(probchosen);
+             //free(probchosen);
+             free(boxedges); // I think this is the one I want to free?
            }
+           
+           
+           
            //put pop2 into pop to replace adults with offspring
            for(i=0; i<N; i++){
            	pop[i]=pop2[i];
