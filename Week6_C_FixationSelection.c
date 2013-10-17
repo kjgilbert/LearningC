@@ -90,7 +90,7 @@ int main(int argc,const char *argv[]){
         } // end for loop 'i=0' is start
 
 // make an array to hold each ind's fitness        
-        double popfitness[N];
+        double *popfitness = malloc(sizeof(double)*N);  /// does this need to be dynamically allocated??
         int j;
         for(j=0; j<N; j++)
         {
@@ -100,7 +100,7 @@ int main(int argc,const char *argv[]){
         		}
         }
 // make an array of standardized values -> relative fitnesses
-		double probchosen[N]; // probability of being chosen to have offspring is the relative fitness
+		double *probchosen = malloc(sizeof(double)*N); // probability of being chosen to have offspring is the relative fitness
 		int jj;
 		for(jj=0; j<N; j++){
 			probchosen[jj] = popfitness[jj]/sum_array(popfitness, N); 
@@ -156,6 +156,8 @@ int main(int argc,const char *argv[]){
 	           
              //free(probchosen);
              free(boxedges); // I think this is the one I want to free?
+             free(popfitness);
+             free(probshosen);
            }
            
            
