@@ -298,7 +298,7 @@ void squareArray(int *z, int size){  //make a function that has no return type (
 // speed
  how does the number of things that you have to do scale with the problem
  
- Big-O
+ Big-O notation
  describes performance
  
  e.g. how slow will something become when you make N really big
