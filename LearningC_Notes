@@ -311,3 +311,9 @@ void squareArray(int *z, int size){  //make a function that has no return type (
  O(n) is the average case, on average we search through boxes and hit the one we want N/2, worst case is to search to the last box, best to search to the first box
 O(n^2) is worse
 O(x^n) is the worst
+
+
+
+
+
+TO CREATE / SEED RANDOM NUMBERS

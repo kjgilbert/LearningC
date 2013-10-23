@@ -18,7 +18,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
-
+#include <time.h>
 
 // what is the probability of fixation in a population  P(p)_fixation
 
@@ -48,6 +48,12 @@
 
 int main(int argc,const char *argv[]){
 
+	// do this once per running the program - seed the random number generator
+	// could do it like this if didn't want to print:  srand((unsigned int)time(NULL));  // cast time as an unsigned int
+	unsigned int seed = (unsigned int)time(NULL);
+	srand(seed);
+	printf("%d\n",seed);
+
 
 // stop me if I don't feed arguments in
 	if(argc<=1) {
@@ -76,7 +82,7 @@ int main(int argc,const char *argv[]){
     for (r = 0; r < REPS; r++)
     {
         int i;  // iterate
-        printf("%d\n", r);
+        //printf("%d\n", r);
         
 //start loop to make one pop at a time
         for(i = 0; i < N; i++) // initiate loop, continue while true (so up until we are one less than N which is correct to the end because N is length 0 to N-1), iterate
@@ -153,7 +159,7 @@ int main(int argc,const char *argv[]){
            		int who = 0;
            		while(who < N)
            			{ // could also have this be while(1){... so that it always continues until we break
-           			printf("%d %f %f\n", who, randnum, boxedges[who]);
+           			//printf("%d %f %f\n", who, randnum, boxedges[who]);
            				if(randnum < boxedges[who]){
            				// if randnum is less than the value, then we've found the individual to choose -- the first box that randnum is less than means that is the box it falls into
            				break; // exits the loop
@@ -164,7 +170,7 @@ int main(int argc,const char *argv[]){
            			// the above picks one individual -> then ramp up to get whole population
     // put that one offspring into our offspring population
            		//probchosen = normalized probability of being chosen
-           		printf("%d %d %d\n", t, i, who);
+           		//printf("%d %d %d\n", t, i, who);
 	           pop2[i] = pop[who]; //pick someone out of the parent pop
          	}
      
