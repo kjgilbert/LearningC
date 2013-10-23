@@ -4,6 +4,7 @@
 
 //prob of fixation of a beneficial allele = 2s
 // Kimura's more accurate form = (1-e^-2s)/(1-e^-2Ns)
+	// these both start with one individual mutant
 
 
 // measure p(s)  -- probability of fixation
@@ -70,12 +71,12 @@ int main(int argc,const char *argv[]){
     int r; //count reps
     int *pop = malloc(sizeof(int)*N); // wasn't in a loop so it was okay not to free
     int result = 0; //put outside the for loop so that we can store the results from the replicates that are within the for loop
-    
+
 //start loop to run through replicates
     for (r = 0; r < REPS; r++)
     {
         int i;  // iterate
-        printf("%d/n", REPS);
+        printf("%d\n", r);
         
 //start loop to make one pop at a time
         for(i = 0; i < N; i++) // initiate loop, continue while true (so up until we are one less than N which is correct to the end because N is length 0 to N-1), iterate
@@ -90,35 +91,43 @@ int main(int argc,const char *argv[]){
             
         } // end for loop 'i=0' is start
 
-// make an array to hold each ind's fitness        
-        double *popfitness = malloc(sizeof(double)*N);  /// does this need to be dynamically allocated??
-        int j;
-        for(j=0; j<N; j++)
-        {
-        	if(pop[j] == 1){popfitness[j] = 1+s;
-        	}else{
-        		popfitness[j]=1;
-        		}
-        }
-// make an array of standardized values -> relative fitnesses
-		double *probchosen = malloc(sizeof(double)*N); // probability of being chosen to have offspring is the relative fitness
-		int jj;
-		for(jj=0; j<N; j++){
-			probchosen[jj] = popfitness[jj]/sum_array(popfitness, N); 
-		}
+
+
 
 // now the parent population exists, need some variables to characterize it        
         
         //casting, taking one variable and treating it like another, put parenthesis of type you want it to be in front of it (doesn't actually change it though), we're not using the round function, so it rounds down b/c it just elimiates anything past decimal
    	 	int x = (int)(Pinit * N); //might not be a round number when we multiply, so round down and make it an int from a double
 		//x will record number of copies of mutant in the pop
-		
+		int t = 0;
 // start a while loop to run the program until fixation occurs		
     	while(x < N && x > 0) // go generation by generation until fixes or goes extinct, keep track of pop by monitoring ind's with a 1 (mutants)
     	{  
+    	
+		
+		// make an array to hold each ind's fitness        
+        double *popfitness = malloc(sizeof(double)*N);  
+        int j;
+        for(j=0; j<N; j++)
+       		{
+        		if(pop[j] == 1){popfitness[j] = 1+s;
+        		}else{
+        			popfitness[j]=1;
+        			}
+        	}
+		
+		
+		
+		// make an array of standardized values -> relative fitnesses
+		double *probchosen = malloc(sizeof(double)*N); // probability of being chosen to have offspring is the relative fitness
+		int cat;
+		for(cat=0; cat<N; cat++){
+			probchosen[cat] = popfitness[cat]/sum_array(popfitness, N); 
+			}    	
+    	
            //both parts of an AND statement must be true for it to be true
            //so sample with replacement: make a second pop and use the first pop (parents)
-           
+           //printf("%d %d\n", t, x);
            int *pop2 = malloc(sizeof(int)*N);  
            
            double *boxedges = malloc(sizeof(double)*N);
@@ -144,6 +153,7 @@ int main(int argc,const char *argv[]){
            		int who = 0;
            		while(who < N)
            			{ // could also have this be while(1){... so that it always continues until we break
+           			printf("%d %f %f\n", who, randnum, boxedges[who]);
            				if(randnum < boxedges[who]){
            				// if randnum is less than the value, then we've found the individual to choose -- the first box that randnum is less than means that is the box it falls into
            				break; // exits the loop
@@ -154,21 +164,18 @@ int main(int argc,const char *argv[]){
            			// the above picks one individual -> then ramp up to get whole population
     // put that one offspring into our offspring population
            		//probchosen = normalized probability of being chosen
+           		printf("%d %d %d\n", t, i, who);
 	           pop2[i] = pop[who]; //pick someone out of the parent pop
-	           
-         }
+         	}
      
 
-       
-     //////// ERROR NOW GETTING:   FixationSelection(52062) malloc: *** error for object 0x100100150: pointer being freed was not allocated *** set a breakpoint in malloc_error_break to debug Abort trap
-           
+               
            //put pop2 into pop to replace adults with offspring
            for(i=0; i<N; i++){
            	pop[i]=pop2[i];
            }
            
-           free(pop2);
-           free(boxedges); 
+
     	
     	
            // update x after the pop has evolved:
@@ -177,25 +184,26 @@ int main(int argc,const char *argv[]){
            		{
                 	x += pop[i]; //add up all genotype values to get # mutants  += means add to existing value, same as x = x+
             	} //end for loop
+            
+            t++;
+            free(pop2);
+        	free(boxedges); 
+           	free(probchosen);
+   	    	free(popfitness);
+   	    	
         } // end while loop 'x<N & x>0
     	
-    	free(popfitness);
-      	free(probchosen);
 
-    	// if I wanted to, could release the pointer here:
-    		// free(pop);
     	
         //store result, the variable was defined above and set as 0 initially
         //every time a population fixes, increment the value every time a population results in a fixation
-        //if(fixed) result++
-        if(x==N) result++;
+        if(x==N) result++; // increment if pop was fixed
         
     } //end for loop 'r=0' is start
     
     // summarize and output result
     printf("Number of successes: %d \nNumber of replicates: %d \nProportion fixed: %f \n", result, REPS, (double)(result)/REPS); //stands for print format, contains the format and the variable within the parentheses
     //what follows the percent tells C how to treat that variable (its type)  %f means floating point number/double; %d means integer
-    //%d has sub options if you want a signed or unsigned integer
     // can also have special characters in the print thing, e.g. a newline  \n  backslash is an "escape character" saying don't take this character literally
     // can output multiple variables just by putting them in order respectively
     // because result and REPS are integers, the division is weird.  if one of them was a double we'd be fine, so just make one of them a double right there by casting
