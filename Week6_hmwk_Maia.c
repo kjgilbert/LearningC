@@ -27,8 +27,8 @@
 
 #define N 100 // these are called preprocessor macros
 #define startingP 0.5
-#define REPS 100//((int)(1 / startingP * 1)) 
-#define s 0.9 // selection
+#define REPS 10//((int)(1 / startingP * 1)) 
+#define s 0.5 // selection
 
 double total=0;
 
@@ -81,7 +81,6 @@ int main(int argc,const char *argv[])
             for(i=0;i<N;i++)
             {
                 pop2[i]=pop[rand()%N];// we want RAND to have a range from 0 to N-1. rand(); we dont need to put anything into those brackets, but it IS a function, it has one result, and it's max value is a global variable RAND_MAX. x%N where the remainder is smaller than N.
-                double *p=malloc(sizeof(double)*N);
                 double randomnumber =0.1;
                 //= runif();
                 double total =0;
@@ -98,7 +97,7 @@ int main(int argc,const char *argv[])
                 }
 
 // create array, p, that holds each relative fitness (where fitness is 1 (if pop[1]=0, no mutation) or 1+s (if pop[i]=1 meaning it has the mutation)
-                
+                double *p=malloc(sizeof(double)*N);
                 for(i=0;i<N;i++) // run once, going to create an object and that we will call back many times
                 {
                     total+=(fitness[i])/sum_array(fitness, N);
@@ -115,7 +114,7 @@ int main(int argc,const char *argv[])
                 else {indiv ++;
                 }
             
-            
+            free(p);
             }
             for(i=0;i<N;i++)
             {

@@ -75,6 +75,7 @@ int main(int argc,const char *argv[]){
     for (r = 0; r < REPS; r++)
     {
         int i;  // iterate
+        printf("%d/n", REPS);
         
 //start loop to make one pop at a time
         for(i = 0; i < N; i++) // initiate loop, continue while true (so up until we are one less than N which is correct to the end because N is length 0 to N-1), iterate
@@ -118,14 +119,9 @@ int main(int argc,const char *argv[]){
            //both parts of an AND statement must be true for it to be true
            //so sample with replacement: make a second pop and use the first pop (parents)
            
-           int *pop2 = malloc(sizeof(int)*N);   
-
-// make the offspring generation population
-           for(i=0; i<N; i++)
-           {
-           		// modify rand to get a uniform distribution from 0 to 1 to draw from for selecting an individual
-           		double randnum = runif();
-           		double *boxedges = malloc(sizeof(double)*N);
+           int *pop2 = malloc(sizeof(int)*N);  
+           
+           double *boxedges = malloc(sizeof(double)*N);
            		double total = 0;
            		// set up the box for the "right edge" of each box in our distribution of probabilities of a given mutant/ind being chosen
            		
@@ -136,7 +132,13 @@ int main(int argc,const char *argv[]){
            				total += probchosen[k]; // total is tracking the right edge of each box
            				boxedges[k] = total;
            			}
-           		
+
+// make the offspring generation population
+           for(i=0; i<N; i++)
+           {
+           		// modify rand to get a uniform distribution from 0 to 1 to draw from for selecting an individual
+           		double randnum = runif();
+        
 	// get one individual offspring
            		// which individual does our random number correspond to?
            		int who = 0;
@@ -154,12 +156,10 @@ int main(int argc,const char *argv[]){
            		//probchosen = normalized probability of being chosen
 	           pop2[i] = pop[who]; //pick someone out of the parent pop
 	           
-             //free(probchosen);
-             free(boxedges); // I think this is the one I want to free?
-             free(popfitness);
-             free(probchosen);
-           }
-           
+         }
+     
+
+       
      //////// ERROR NOW GETTING:   FixationSelection(52062) malloc: *** error for object 0x100100150: pointer being freed was not allocated *** set a breakpoint in malloc_error_break to debug Abort trap
            
            //put pop2 into pop to replace adults with offspring
@@ -168,7 +168,9 @@ int main(int argc,const char *argv[]){
            }
            
            free(pop2);
-           
+           free(boxedges); 
+    	
+    	
            // update x after the pop has evolved:
            x = 0; // this is okay b/c the while loop won't check x until the end
            		for(i = 0; i < N; i++)
@@ -176,7 +178,10 @@ int main(int argc,const char *argv[]){
                 	x += pop[i]; //add up all genotype values to get # mutants  += means add to existing value, same as x = x+
             	} //end for loop
         } // end while loop 'x<N & x>0
-    	    	
+    	
+    	free(popfitness);
+      	free(probchosen);
+
     	// if I wanted to, could release the pointer here:
     		// free(pop);
     	
