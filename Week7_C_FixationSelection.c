@@ -136,6 +136,9 @@ int main(int argc,const char *argv[]){
            //printf("%d %d\n", t, x);
            int *pop2 = malloc(sizeof(int)*N);  
            
+           
+           // THIS PROCESS WILL BE MADE FASTER IN THE FUTURE BY A DIFFERENT APPROACH
+           
            double *boxedges = malloc(sizeof(double)*N);
            		double total = 0;
            		// set up the box for the "right edge" of each box in our distribution of probabilities of a given mutant/ind being chosen
@@ -191,7 +194,7 @@ int main(int argc,const char *argv[]){
                 	x += pop[i]; //add up all genotype values to get # mutants  += means add to existing value, same as x = x+
             	} //end for loop
             
-            t++;
+            t++; // for when I was debugging, print t as it updates
             free(pop2);
         	free(boxedges); 
            	free(probchosen);
@@ -209,10 +212,5 @@ int main(int argc,const char *argv[]){
     
     // summarize and output result
     printf("Number of successes: %d \nNumber of replicates: %d \nProportion fixed: %f \n", result, REPS, (double)(result)/REPS); //stands for print format, contains the format and the variable within the parentheses
-    //what follows the percent tells C how to treat that variable (its type)  %f means floating point number/double; %d means integer
-    // can also have special characters in the print thing, e.g. a newline  \n  backslash is an "escape character" saying don't take this character literally
-    // can output multiple variables just by putting them in order respectively
-    // because result and REPS are integers, the division is weird.  if one of them was a double we'd be fine, so just make one of them a double right there by casting
-    // have to think about order of operations with casting, so that's what the parentheses are for.  Verify that this worked
    
 } //end main
