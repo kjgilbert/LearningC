@@ -317,3 +317,104 @@ O(x^n) is the worst
 
 
 TO CREATE / SEED RANDOM NUMBERS
+
+Don't usually print the seed, but I did here:
+
+	// do this once per running the program - seed the random number generator
+	// could do it like this if didn't want to print:  srand((unsigned int)time(NULL));  // cast time as an unsigned int
+	unsigned int seed = (unsigned int)time(NULL);
+	srand(seed);
+	printf("%d\n",seed);
+	
+	
+	
+	
+	
+	
+	
+	
+// EVALUATING PERFORMANCE OF A PROGRAM
+
+see big-O notation above also
+O(1) is best
+O(log(N))
+O(n) is the average case, on average we search through boxes and hit the one we want N/2, worst case is to search to the last box, best to search to the first box
+O(N*log(N))
+O(n^2) is worse
+O(N^3)
+O(x^n) is the worst, any way to get better than this is worth it
+
+O could stand for 'order', e.g. order 3, to the third power, meaning the cubed term is much much bigger than any ther term and the smaller terms drop out -- this is the same as order N: the number of steps is proportional to N
+our algorithm is O(N^2) because N times we draw a number ( the for loop with N in it ) and make a comparison on average 1/2 N times (to find the right parent) then we have other stuff we do, so kind of like 1 + N/2 + 1 steps total, all N times, so 2N + N^2/2 and the 2N drops out
+
+
+
+TIMING PROGRAMS:
+
+to time something in the command line, instead of ">  ./program" do ">  time ./program"
+that will return something like: real 1:51, user 1:27, system 0:05   meaning: time elapsed in real time, time elapsed for running only the code if my computer was not otherwise occupied, and time spent on things like reading/writing files
+
+
+speeding up a program, kind of like the I'm thinking of a number problem.  Much faster to guess the middle number first and narrow it down to half the possibility --> this is called BINARY SEARCH 
+
+divide set of options in half - pick the middle bin or if even, one or the other
+because our 'box edges' array has all the right edges, it essentially has all the left edges too ( except the zero edge )
+when we divide things in half, we have to know both edges of the boxes
+
+double r = runif();
+int guess = N/2;
+while(){
+	// is the guess in the right box?
+	if(boxedges[guess] > r && boxedges[guess-1] <= r){ we've found the right box, i.e. the correct parent! } // BUT runif never produces 1, but it does produce zero, which is why we use <= in one side but not the other
+	// if not, is our guess too high or too low
+		// use an else if because the first and second might both be true and we don't want everything to happen
+	else if(boxedges[guess > r]){ guess = guess/2} // this is a thing "else" space "if" and it only looks there if the first thing doesn't happen and the second thing is true
+	else{guess = bigger half guess}
+	}  // repeat and return to beginning of while loop until get correct guess
+	
+	// what we really want to keep track of is the possible range of numbers that could be the right answer
+
+
+**** BUT instead of a while loop we're going to use a recursive equation
+	this is a function that can call itself if some thing is met
+	
+	
+	int binary( ){
+		
+		
+		if(){
+			return( binary()); // call the function again with these arguments until we get the condition we want and return answer
+			}else{
+				return(correctbox);  // return control of the program to whatever initally called this function
+			} // VERY IMPORTANT in a call stack to make sure we do have a final return value and fdon't infinitely call the recursion statement
+	}
+	
+	
+	
+	
+int binary(double randnum, double *boxedges, int LowestPossibleValueOfTrueValue, int HighestPossibleValueOfTrueValue){
+	int middle = (low+high)/2;
+	if(randnum < boxedges[middle] && (middle==0 || randnum >= boxedges[middle-1]) ){ // BUT if runif draws a zero?, we don't want to ask for boxedge-1, so just make sure we don't do that middle-1 if middle=0, but we know if middle=0 then we know we have the leftmost box as our answer
+			// so if true AND (True OR don't evaluate past there if both were true)
+			// if FALSE, stops
+			// if true AND ((false or true)=TRUE)
+		return middle;		
+		}else if(randnum >= boxedges[middle]){
+			return binary(randnum, boxedges, middle+1, high); // we were guessing too low at first, now just look between our highest number and our previous middle+1 as the new lowest number
+			}else{
+				return binary(randnum, boxedges, low, middle-1); // we were guessing to high at first, now just look between our lowest number and our previous middle-1 as the new highest number
+				}
+		
+	}
+
+
+
+in the main function:
+
+
+blah blah blah
+
+binary(randnum, boxedges(an array), 0, N-1 (size of N minus 1, the length of that array) )
+
+
+the above takes about log_2_N steps  log_2(N), so 2^N =x is the answer --> so it only takes one extra guess to find the correct box when we double N because if you double N log base 2 goes up only by 1
