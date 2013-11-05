@@ -32,8 +32,26 @@
 
 // what is the probability of fixation in a population  P(p)_fixation
 
+//#define AlgChoice = 1  //make code run so that changing this number changes the algorithm used for selection
+	// 0 = standard, 1 = binary search, 2 = ...
+	
+	
 
-
+// make the binary search recursive function
+int binary(double randnum, double *boxedges, int LowestPossibleValueOfTrueValue, int HighestPossibleValueOfTrueValue){
+	int middle = (LowestPossibleValueOfTrueValue+HighestPossibleValueOfTrueValue)/2;
+	if(randnum < boxedges[middle] && (middle==0 || randnum >= boxedges[middle-1]) ){ // BUT if runif draws a zero?, we don't want to ask for boxedge-1, so just make sure we don't do that middle-1 if middle=0, but we know if middle=0 then we know we have the leftmost box as our answer
+			// so if true AND (True OR don't evaluate past there if both were true)
+			// if FALSE, stops
+			// if true AND ((false or true)=TRUE)
+		return middle;		
+		}else if(randnum >= boxedges[middle]){
+			return binary(randnum, boxedges, middle+1, HighestPossibleValueOfTrueValue); // we were guessing too low at first, now just look between our highest number and our previous middle+1 as the new lowest number
+			}else{
+				return binary(randnum, boxedges, LowestPossibleValueOfTrueValue, middle-1); // we were guessing to high at first, now just look between our lowest number and our previous middle-1 as the new highest number
+				}
+		
+	}
 
 // first make our own rand function to sample from a uniform distribution 0-1
   	// modify rand to get a uniform distribution from 0 to 1 to draw from
@@ -67,7 +85,7 @@ int main(int argc,const char *argv[]){
 
 // stop me if I don't feed arguments in
 	if(argc<=1) {
-    	    printf("You did not feed me arguments for N, Pinit, Reps, or s.\n");
+    	    printf("You did not feed me arguments for N, Pinit, Reps, s, or algorithm choice.\n");
         	exit(1);
      	}
 
@@ -76,6 +94,7 @@ int main(int argc,const char *argv[]){
 	double Pinit = atof(argv[2]);
 	int REPS = atoi(argv[3]);
 	double s = atof(argv[4]); // selection coefficient
+	int AlgChoice = atoi(argv[5]);
 
 	// resident has fitness of 1
 	// mutant has fitness of 1+s
@@ -149,6 +168,8 @@ int main(int argc,const char *argv[]){
            
            // THIS PROCESS WILL BE MADE FASTER IN THE FUTURE BY A DIFFERENT APPROACH
            
+           
+        // set up boxedges here
            double *boxedges = malloc(sizeof(double)*N);
            		double total = 0;
            		// set up the box for the "right edge" of each box in our distribution of probabilities of a given mutant/ind being chosen
@@ -160,6 +181,7 @@ int main(int argc,const char *argv[]){
            				total += probchosen[k]; // total is tracking the right edge of each box
            				boxedges[k] = total;
            			}
+           			
 
 // make the offspring generation population
            for(i=0; i<N; i++)
@@ -169,7 +191,10 @@ int main(int argc,const char *argv[]){
         
 	// get one individual offspring
            		// which individual does our random number correspond to?
-           		int who = 0;
+      		int who = 0;
+
+           	
+           	if(AlgChoice==0){
            		while(who < N)
            			{ // could also have this be while(1){... so that it always continues until we break
            			//printf("%d %f %f\n", who, randnum, boxedges[who]);
@@ -180,11 +205,17 @@ int main(int argc,const char *argv[]){
            				who++;
            				} // who will equal the location in the array of the ind we want
            			}
+           		} // else{printf("Algorithm 0 not chosen \n");}
+           		
+           	if(AlgChoice==1){
+          		who = binary(randnum, boxedges, 0, N-1);
+           		}
            			// the above picks one individual -> then ramp up to get whole population
     // put that one offspring into our offspring population
            		//probchosen = normalized probability of being chosen
            		//printf("%d %d %d\n", t, i, who);
 	           pop2[i] = pop[who]; //pick someone out of the parent pop
+	           		//printf("%d \n", who);
          	}
      
 
