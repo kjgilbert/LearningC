@@ -9,7 +9,7 @@
 #define REPS 1000
 #define s 0.05 // selection
 #define Algo 1
-double total=0;
+double total=0; <<<<<<<<<<<<<<<<<<<<**************************************** I think this has to be moved into the main function
 
 
 double runif(){

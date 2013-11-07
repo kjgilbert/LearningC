@@ -418,3 +418,34 @@ binary(randnum, boxedges(an array), 0, N-1 (size of N minus 1, the length of tha
 
 
 the above takes about log_2_N steps  log_2(N), so 2^N =x is the answer --> so it only takes one extra guess to find the correct box when we double N because if you double N log base 2 goes up only by 1
+
+
+
+Week 9 - Nov 6 ********  other algorithms for speed  *****
+
+box edge method
+	simple search  O(N^2)
+	binary search  O(NlogN)
+	educated guess search
+accept/reject method
+
+
+if we knew the distribution of our fitness values (the distribution of our probabilities), we could do something more educated than binary search which goes to the middle values each time
+we could instead start with the largest values and go from there - the boxes get arranged differently so that they decrease in size
+
+because ew know most individuals will have high fitness since they're more likely to survive and reproduce, we should search from there - so we'll take a guess and search from there
+
+
+randnum - draw a random number from a uniform distribution
+figure out the average width of a box to then make a guess
+	each box on average should have width 1/N
+	
+double meanbox = 1.0/N;  // average size of all our boxes, just do this one
+int guess = randnum/meanbox;   // should put us in or close to the right box
+if(boxedges[guess] > randnum){    // if the right edge of the box we guess is greater than randnum, then we're either in the right box or the right box is anywhere to the let of us
+	while(guess > 0 && boxedges[guess-1= > randnum) guess-- ; // iterate down	we were too high so go through the boxes to the left until we find it	
+	}else{
+	guess++; // else we were too low and go up to find the right box
+	while(boxedges[guess] < randnum) guess++;
+	}
+	// guess's scope is outside the loop, so it is output at the end as the correct box (corrent parent)
