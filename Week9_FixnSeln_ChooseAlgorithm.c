@@ -1,20 +1,7 @@
-//Homework -- have (up to) 4 versions of this code: original + 3 improvements OR something with an if statement that lets you choose which way of improving the code to do that time
-// e.g. #define AlGo(numbers)
-// have each number run a different code, e.g. 1== binary search, 2==...., 3==...
-// if(AlGo==0){...}
-// if(AlGo==1){...}  etc...
+// 4 different algorithms for speed, compare them
 
 
-// to time something in the command line, instead of ">  ./program" do ">  time ./program"
-// that will return something like: real 1:51, user 1:27, system 0:05   meaning: time elapsed in real time, time elapsed for running only the code if my computer was not otherwise occupied, and time spent on things like reading/writing files
-
-
-//standard boxedges : 	real = 0.107s, 	user = 0.107s, sys = 0.002s
-//binary search : 		real = 0.247s, 	user = 0.080s, sys = 0.002s
-
-
-
-///   WEEK 8 **
+///   WEEK 9 **
 
 //Haldane's prob of fixation of a beneficial allele = 2s
 // Kimura's more accurate form = (1-e^-2s)/(1-e^-2Ns)
@@ -33,12 +20,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <math.h>
 
 // what is the probability of fixation in a population  P(p)_fixation
 
-//#define AlgChoice 1  //make code run so that changing this number changes the algorithm used for selection
-	// 0 = standard, 1 = binary search, 2 = ...
-	// I like this better as a command line argument, makes more sense to me and means I don't have to recompile each time	
 
 // make the binary search recursive function
 int binary(double randnum, double *boxedges, int LowestPossibleValueOfTrueValue, int HighestPossibleValueOfTrueValue){
@@ -102,6 +87,8 @@ int main(int argc,const char *argv[]){
 	// show me which algorithm I chose
 	if(AlgChoice == 0){printf("Simple search \n");}
 	if(AlgChoice == 1){printf("Binary search \n");}
+	if(AlgChoice == 2){printf("Educated guess \n");}
+	if(AlgChoice == 3){printf("Accept/reject \n");}
 	
 	// resident has fitness of 1
 	// mutant has fitness of 1+s
@@ -147,8 +134,9 @@ int main(int argc,const char *argv[]){
     	{  
     	
 		
-		// make an array to hold each ind's fitness        
+		// make an array to hold each ind's fitness   /// ALSO FIND THE MAX FITNESS FOR USING Algorithm 3     
         double *popfitness = malloc(sizeof(double)*N);  
+        double maxFitness = 0;
         int j;
         for(j=0; j<N; j++)
        		{
@@ -156,8 +144,10 @@ int main(int argc,const char *argv[]){
         		}else{
         			popfitness[j]=1;
         			}
+        		if(popfitness[j] > maxFitness){ // find maxFitness
+        			maxFitness=popfitness[j];
+        			}
         	}
-		
 		
 		
 		// make an array of standardized values -> relative fitnesses
@@ -201,7 +191,7 @@ int main(int argc,const char *argv[]){
       		int who = 0;
 
            	
-           	if(AlgChoice==0){
+           	if(AlgChoice==0){  // simple search method
            		while(who < N)
            			{ // could also have this be while(1){... so that it always continues until we break
            			//printf("%d %f %f\n", who, randnum, boxedges[who]);
@@ -214,10 +204,34 @@ int main(int argc,const char *argv[]){
            			}
            		} // else{printf("Algorithm 0 not chosen \n");}
            		
-           	if(AlgChoice==1){
+           	if(AlgChoice==1){  // binary search method
           		who = binary(randnum, boxedges, 0, N-1);
            		}
-           			// the above picks one individual -> then ramp up to get whole population
+           		
+           	if(AlgChoice==2){  // educated guess method
+           		double meanbox = 1.0/N;  // average size of all our boxes, just do this one
+				int guess = randnum/meanbox;   // should put us in or close to the right box
+				if(boxedges[guess] > randnum){    // if the right edge of the box we guess is greater than randnum, then we're either in the right box or the right box is anywhere to the let of us
+					while(guess > 0 && boxedges[guess-1] > randnum) guess-- ; // iterate down	we were too high so go through the boxes to the left until we find it	
+					}else{
+					guess++; // else we were too low and go up to find the right box
+					while(boxedges[guess] < randnum) guess++;
+					}
+				// guess's scope is outside the loop, so it is output at the end as the correct box (corrent parent)
+           		who = guess;
+           		}
+           		
+           	if(AlgChoice==3){  // accept/reject method
+           		double height;
+           		int guess;
+           		do{  // this algorithm always ends up in the "right box" because we use size of fitnesses, hence making each proportionally selected correctly to make offspring
+					guess = floor(randnum*N); // floor rounds down from a floating point number
+					height = runif()*maxFitness;
+					}while(popfitness[guess] < height); // we want to keep guess at the end again
+				who = guess;
+           		}
+           		
+           		// the above picks one individual -> then ramp up to get whole population
     // put that one offspring into our offspring population
            		//probchosen = normalized probability of being chosen
            		//printf("%d %d %d\n", t, i, who);

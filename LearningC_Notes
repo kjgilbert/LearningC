@@ -433,9 +433,9 @@ accept/reject method
 if we knew the distribution of our fitness values (the distribution of our probabilities), we could do something more educated than binary search which goes to the middle values each time
 we could instead start with the largest values and go from there - the boxes get arranged differently so that they decrease in size
 
-because ew know most individuals will have high fitness since they're more likely to survive and reproduce, we should search from there - so we'll take a guess and search from there
+because we know most individuals will have high fitness since they're more likely to survive and reproduce, we should search from there - so we'll take a guess and search from there
 
-
+** educated guess
 randnum - draw a random number from a uniform distribution
 figure out the average width of a box to then make a guess
 	each box on average should have width 1/N
@@ -443,9 +443,45 @@ figure out the average width of a box to then make a guess
 double meanbox = 1.0/N;  // average size of all our boxes, just do this one
 int guess = randnum/meanbox;   // should put us in or close to the right box
 if(boxedges[guess] > randnum){    // if the right edge of the box we guess is greater than randnum, then we're either in the right box or the right box is anywhere to the let of us
-	while(guess > 0 && boxedges[guess-1= > randnum) guess-- ; // iterate down	we were too high so go through the boxes to the left until we find it	
+	while(guess > 0 && boxedges[guess-1 => randnum) guess-- ; // iterate down	we were too high so go through the boxes to the left until we find it	
 	}else{
 	guess++; // else we were too low and go up to find the right box
 	while(boxedges[guess] < randnum) guess++;
 	}
 	// guess's scope is outside the loop, so it is output at the end as the correct box (corrent parent)
+	
+	
+	
+** Accept Reject
+	constant width bins where height of the bin is proportional to fitness
+		throw a dart at the histogram, if it lands in a bin, choose that one, if it lands above a bin, throw again, repeat until hit a bin
+	want to make the tallest box be at the top of the histogram to eliminate as much empty space as possible so we don't waste "darts"
+	
+	
+//pick one of the boxes -> x and y coordinates
+int guess = floor(randnum*N); // floor rounds down from a floating point number
+double height = runif()*maxFitness;
+
+
+
+>>> do while loops, do first step of the loop without checking condition, condition is checked at the end
+
+do{}while();
+	
+	
+	e.g.
+	
+	do
+	{
+	....
+	}while();  // NOTE THE REQUIRED SEMICOLON HERE
+	
+// have our array of fitnesses  popfitness
+int guess;
+double randnum;
+
+do{  // this algorithm always ends up in the "right box" because we use size of fitnesses, hence making each proportionally selected correctly to make offspring
+	int guess = floor(randnum*N); // floor rounds down from a floating point number
+	double height = runif()*maxFitness;
+}while(popfitness[guess] < height); // we want to keep guess at the end again
+
