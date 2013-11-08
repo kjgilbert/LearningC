@@ -2,6 +2,8 @@
 ///   WEEK 6 **
 /// ADD SELECTION  **
 
+
+
 //Haldane's prob of fixation of a beneficial allele = 2s
 // Kimura's more accurate form = (1-e^-2s)/(1-e^-2Ns)
 	// these both start with one individual mutant !!!!

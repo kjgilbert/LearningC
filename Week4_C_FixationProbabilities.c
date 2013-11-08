@@ -1,3 +1,8 @@
+// Week 4 of learning C (I missed week 3, see Maia's code), creating a program to simulate neutral evolution and find the probability of fixation of a neutral allele.
+
+
+
+
 
 // for loops:
 // int i;

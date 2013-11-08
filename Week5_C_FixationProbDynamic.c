@@ -1,6 +1,5 @@
-
-/// could send bugs to maia
-
+// Week 5 of learning C, build upon last week's program of neutral fixation probabilities.  Now use dynamic memory allocation.
+// THE UPDATED version that actually includes the dynamic memory allocation is in the week 5 homework file.
 
 
 

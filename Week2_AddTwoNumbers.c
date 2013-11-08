@@ -1,3 +1,4 @@
+// Week 2 of learning C, create a program that adds two numbers together. Further extended to feed those numbers in through the command line.
 
 
 #include <stdio.h>

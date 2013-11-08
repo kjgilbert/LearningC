@@ -1,3 +1,4 @@
+// Week 1 of learning C, make a program to print something to the console. I opted out of 'hello world'.
 
 
 //my first C program  11 Sep 2013

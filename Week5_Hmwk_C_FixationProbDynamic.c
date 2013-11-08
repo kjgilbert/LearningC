@@ -1,5 +1,5 @@
+// Week 5 of learning C, build upon last week's program of neutral fixation probabilities.  Now use dynamic memory allocation.
 
-/// could send bugs to maia
 
 
 

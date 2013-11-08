@@ -1,3 +1,8 @@
+
+///   WEEK 8 **
+///  Use binary search to try to improve the speed of last week's code. Make the code so one can easily switch between speed algorithms. I did this via the command line input; could also do with the macro which is currently commented out.
+
+
 //Homework -- have (up to) 4 versions of this code: original + 3 improvements OR something with an if statement that lets you choose which way of improving the code to do that time
 // e.g. #define AlGo(numbers)
 // have each number run a different code, e.g. 1== binary search, 2==...., 3==...

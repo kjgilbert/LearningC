@@ -1,6 +1,7 @@
 
-///   WEEK 6 **
-/// ADD SELECTION  **
+///   WEEK 7 **
+/// FIX BUGS FROM WEEK 6  **
+
 
 //Haldane's prob of fixation of a beneficial allele = 2s
 // Kimura's more accurate form = (1-e^-2s)/(1-e^-2Ns)

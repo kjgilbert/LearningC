@@ -1,7 +1,8 @@
-// 4 different algorithms for speed, compare them
 
 
 ///   WEEK 9 **
+///  4 different algorithms for speed, compare them
+
 
 //Haldane's prob of fixation of a beneficial allele = 2s
 // Kimura's more accurate form = (1-e^-2s)/(1-e^-2Ns)

@@ -1,16 +1,7 @@
-//Homework -- have (up to) 4 versions of this code: original + 3 improvements OR something with an if statement that lets you choose which way of improving the code to do that time
-// e.g. #define AlGo(numbers)
-// have each number run a different code, e.g. 1== binary search, 2==...., 3==...
-// if(AlGo==0){...}
-// if(AlGo==1){...}  etc...
-
-
-// to time something in the command line, instead of ">  ./program" do ">  time ./program"
-// that will return something like: real 1:51, user 1:27, system 0:05   meaning: time elapsed in real time, time elapsed for running only the code if my computer was not otherwise occupied, and time spent on things like reading/writing files
-
-
 
 ///   WEEK 8 **
+///  Use binary search to try to improve the speed of last week's code.
+
 
 //Haldane's prob of fixation of a beneficial allele = 2s
 // Kimura's more accurate form = (1-e^-2s)/(1-e^-2Ns)
@@ -224,3 +215,17 @@ int main(int argc,const char *argv[]){
     printf("Number of successes: %d \nNumber of replicates: %d \nProportion fixed: %f \n", result, REPS, (double)(result)/REPS); //stands for print format, contains the format and the variable within the parentheses
    
 } //end main
+
+
+
+
+//Homework -- have (up to) 4 versions of this code: original + 3 improvements OR something with an if statement that lets you choose which way of improving the code to do that time
+// e.g. #define AlGo(numbers)
+// have each number run a different code, e.g. 1== binary search, 2==...., 3==...
+// if(AlGo==0){...}
+// if(AlGo==1){...}  etc...
+
+
+// to time something in the command line, instead of ">  ./program" do ">  time ./program"
+// that will return something like: real 1:51, user 1:27, system 0:05   meaning: time elapsed in real time, time elapsed for running only the code if my computer was not otherwise occupied, and time spent on things like reading/writing files
+
