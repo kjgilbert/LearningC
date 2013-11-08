@@ -17,7 +17,7 @@ int main(){
 }
 */
 
-// so it actually works without doing any includes and gives the warning, how is that possibel if the standard library is the onte that contains printf?
+// so it actually works without doing any includes and gives the warning, how is that possible if the standard library is the one that contains printf?
 
 
 #include <stdio.h>
