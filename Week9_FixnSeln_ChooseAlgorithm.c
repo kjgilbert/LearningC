@@ -3,6 +3,8 @@
 ///   WEEK 9 **
 ///  4 different algorithms for speed, compare them
 
+//  TRY SEEING WHAT TIME IS PER GENERATION AND IF AT A SMALL N I'M GETTING THE EXPECTED FIXATION PROBABILITIES
+
 
 //Haldane's prob of fixation of a beneficial allele = 2s
 // Kimura's more accurate form = (1-e^-2s)/(1-e^-2Ns)

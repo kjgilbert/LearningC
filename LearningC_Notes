@@ -487,3 +487,46 @@ do{  // this algorithm always ends up in the "right box" because we use size of 
 	double height = runif()*maxFitness;
 }while(popfitness[guess] < height); // we want to keep guess at the end again
 
+
+
+
+///// *******  week 10  *****
+
+text!
+	ASCII takes letters, symbols etc and codes them as a number -- 128 total
+	now Unicode is more common, a much larger table of graphic symbols/letters etc
+	
+	
+char x= 17;  // this would require you to know the ascii table for what letter corresponds to this number
+char x='a';  // so now the C compiler will use the table and assign a number to this lowercase a
+	// otherwise it might think a is a variable and say it's not found
+	
+to print a character
+	printf("%c \n", x);  // prints out the letter a  ALWAYS JUST ONE CHARACTER, OTHERWISE NEED A STRING
+	printf("%d \n", x);  // that is the format specifier for an integer, it will print out the number for a
+
+it's useful to know that lowercase a-z are continuous sequential numbers, but not necessarily starting at 1
+same for uppercase A-Z but not necessarily next to the lowercase ones
+
+	printf("%c \n", x+2);  // prints out the letter c because c is 2 spaces over from a
+
+char *x=malloc(sizeof(char)*10); // make an array x, 10 characters long, we call this a STRING
+
+a string in C is a null-terminated array of characters, it has a special ending character in the last 'box' to say this is the end of the string
+	that character is \0 -- the null character for a string
+	char x= '\0';
+	
+	the null character always must be the end thing
+	
+if I want to print "cat"
+
+	
+%s  is a string print designator
+
+
+// the infinite monkey theorem
+
+want a phrase
+	a million monkeys typing, let them do it a bunch of times, eventually one will be right
+	versus locking in "good" choices, i.e. mutating them randomly
+
