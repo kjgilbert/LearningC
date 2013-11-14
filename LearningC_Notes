@@ -529,4 +529,12 @@ if I want to print "cat"
 want a phrase
 	a million monkeys typing, let them do it a bunch of times, eventually one will be right
 	versus locking in "good" choices, i.e. mutating them randomly
+	
+	
+	
+recursive functions are generally good for things that need to be broken up into smaller parts, example searching, or breaking a number into factors
+
+
+// there are other functions for strings in C that manipulate them: copying, concatenating, finding length of, etc.  to be learned in the future...
+
 
