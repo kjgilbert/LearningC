@@ -214,7 +214,7 @@ int main(int argc,const char *argv[]){
            	if(AlgChoice==2){  // educated guess method
            		double meanbox = 1.0/N;  // average size of all our boxes, just do this one
 				int guess = randnum/meanbox;   // should put us in or close to the right box
-				if(boxedges[guess] > randnum){    // if the right edge of the box we guess is greater than randnum, then we're either in the right box or the right box is anywhere to the let of us
+				if(boxedges[guess] >= randnum){    // if the right edge of the box we guess is greater than or equal to randnum, then we're either in the right box or the right box is anywhere to the left of us
 					while(guess > 0 && boxedges[guess-1] > randnum) guess-- ; // iterate down	we were too high so go through the boxes to the left until we find it	
 					}else{
 					guess++; // else we were too low and go up to find the right box
@@ -225,21 +225,20 @@ int main(int argc,const char *argv[]){
            		}
            		
            	if(AlgChoice==3){  // accept/reject method
-           		double height;
+           		double dart;
            		int guess;
            		do{  // this algorithm always ends up in the "right box" because we use size of fitnesses, hence making each proportionally selected correctly to make offspring
-					guess = floor(randnum*N); // floor rounds down from a floating point number
-					height = runif()*maxFitness;
-					}while(popfitness[guess] < height); // we want to keep guess at the end again
+					guess = floor(runif()*N); // floor rounds down from a floating point number
+					dart = runif()*maxFitness;
+					}while(popfitness[guess] < dart); // we want to keep guess at the end again
 				who = guess;
            		}
            		
            		// the above picks one individual -> then ramp up to get whole population
     // put that one offspring into our offspring population
            		//probchosen = normalized probability of being chosen
-           		//printf("%d %d %d\n", t, i, who);
 	           pop2[i] = pop[who]; //pick someone out of the parent pop
-	           		//printf("%d \n", who);
+	           		
          	}
      
 
