@@ -1,4 +1,3 @@
-// NOT CURRENTLY COMPILING BECAUSE INCOMPLETE
 
 ///   WEEK 10 **
 /// using text
@@ -40,16 +39,16 @@
 #include <math.h>
 
 
-// FIX THIS FUNCTION JUST BELOW TO BE randInt
-double runif(){ // doesn't need any info, it will just spit out a random number
-	// use casting so the division doesn't come out as a rounded integer
-	return((double)rand() / RAND_MAX);  // the return function "returns control of the program back to the main function where it left off before being called
+
+int rand_between(int max) { // return a random int between 0 and max
+    return rand() % max;
 }
+
 
 char randChar(){  //produce a random character, to: 1. mutate and 2. to create our initial random sequence
 	char finalChar;
 	int choices = 26*2+4; //length of our library of all possible characters, see comments in MAIN
-	int draw = randInt(choices); // NEED TO MAKE THIS FUNCTION
+	int draw = rand_between(choices-1); // minus 1 because 52 is going from 0 to 51
 	//make letters out of the numbers we drew
 	if(draw < 26) finalChar = 'a'+draw; // so 0-25 in our library is now lowercase a-z
 	else if(draw < 52)  finalChar = 'A'+(draw-26);//if 26-51, then it's an uppercase letter A-Z
@@ -72,11 +71,22 @@ char randChar(){  //produce a random character, to: 1. mutate and 2. to create o
 
 
 // alternatively could make the library manually then call random pieces of it to get the random character
-char choices[]="abcdefghijklmnopqrstuvwxyABCDEFGHIJKLMNOPQRSTUVWXYZ. '!"; 
+	//char choices[]="abcdefghijklmnopqrstuvwxyABCDEFGHIJKLMNOPQRSTUVWXYZ. '!"; 
 
 
 int main(int argc,const char *argv[]){
 
+	unsigned int seed = (unsigned int)time(NULL);
+	srand(seed);
+	//printf("%d\n",seed);
+
+
+// test printing out a random character
+	char test;
+	test = randChar();
+	printf("%c \n", test);
+	
+	
 /*	BLOCK COMMENT
 
 	// play around with chars
